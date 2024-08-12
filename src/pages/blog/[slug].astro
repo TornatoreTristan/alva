@@ -1,0 +1,52 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Categories from '@/components/ui/category';
+import Author from '@/components/ui/author';
+
+export async function getStaticPaths() {
+  const response = await fetch(`${import.meta.env.BLOG_URL}/posts?_embed`);
+  const posts = await response.json();
+
+  return posts.map((post: any) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+export async function get({ params }:any) {
+  const response = await fetch(`${import.meta.env.BLOG_URL}/posts?slug=${params.slug}&_embed`);
+  const post = await response.json();
+  if (!post.length) {
+    return { status: 404 };
+  }
+
+  return {
+    props: {
+      post: post[0],
+    }
+  };
+}
+
+const { post }: { post: any, categories: any } = Astro.props;
+console.log("Post author ID:", post.author);
+---
+
+<Layout title={post.title.rendered}>
+  <article class="max-w-4xl mx-auto p-8">
+    <div class="flex gap-12 items-center mb-12">
+      <div class="w-2/6 relative">
+        <div class="h-full -z-10 absolute w-full bg-secondary rotate-6 rounded"></div>
+        <img width="300" src={post._embedded['wp:featuredmedia'][0].source_url} alt={post.title.rendered} class="rounded object-cover z-20 block" />
+      </div>
+      <div class="w-4/6">
+        <Categories client:load categories={post.categories} />
+        <h1 class=" mt-5 text-1xl font-bold mb-6">{post.title.rendered}</h1>
+        <div class="flex gap-4">
+          <p class="text-sm text-gray-500">Publié le {new Date(post.date).toLocaleDateString()}</p>
+          <Author authorId={post.author} client:load />
+        </div>
+      </div>
+    </div>
+    <div set:html={post.content.rendered}></div>
+  </article>
+</Layout>

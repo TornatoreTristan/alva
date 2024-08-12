@@ -36,7 +36,7 @@ const components: { title: string; href: string; description: string }[] = [
   },
   {
     title: "Actualités",
-    href: "/",
+    href: "/blog",
     description:
       "Alva décrypte l'actualité de la rénovation énergétique pour vous.",
   },
