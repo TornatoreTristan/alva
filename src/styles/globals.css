@@ -203,6 +203,9 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   * {
     @apply border-border;
     color: var(--primary);
@@ -268,5 +271,66 @@
   article ul {
     list-style-type: disc;
     padding-left: 1rem;
+  }
+
+  article blockquote {
+    background: #F9FFE6;
+    padding: 3rem;
+    border-radius: var(--radius);
+  }
+    article blockquote p{
+    margin-bottom: 0;
+  }
+
+  .article-content img {
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin: 4rem 0;
+    display: block;
+    position: relative;
+  }
+
+  .article-content figure {
+    width: 70%;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .article-content figure:after {
+    content: attr(alt);
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+    transform: rotate(5deg);
+    width: 100%;
+    height: 100%;
+    background: var(--secondary);
+    border-radius: var(--radius);
+  }
+
+  .article-content a {
+    color: var(--primary);
+    border-bottom: 3px solid var(--primary);
+    font-weight: 700;
+  }
+  .article-content table {
+    width: 100%;
+    background: #fff;
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 2px solid var(--primary);
+  }
+  .article-content thead {
+    background: var(--primary);
+    border-radius: var(--radius);
+  }
+  .article-content th {
+    color: var(--secondary);
+    font-weight: 700;
+    text-align: left;
+    padding: 0.7rem;
+  }
+  .article-content td {
+    padding: 1.2rem 0.7rem;
   }
 }
