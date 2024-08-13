@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Categories from '@/components/ui/category';
+import Author from '@/components/ui/author'
+import AuthorCard from '@/components/ui/authorCard'
+
+function calculateReadingTime(text: string) {
+  const wordsPerMinute = 200; 
+  const textLength = text.split(/\s+/).length; 
+  const readingTime = Math.ceil(textLength / wordsPerMinute);
+  return readingTime;
+}
+
+function generateTableOfContents(htmlContent: string) {
+  // Expression régulière pour capturer les titres
+  const headingRegex = /<h([1-6])[^>]*>(.*?)<\/h[1-6]>/g;
+  const toc = [];
+  let match;
+
+  // Utilise la regex pour trouver tous les titres
+  while ((match = headingRegex.exec(htmlContent)) !== null) {
+    const level = parseInt(match[1]);
+    const text = match[2].replace(/<[^>]+>/g, ''); // Supprime les balises HTML à l'intérieur du titre
+    const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+
+    toc.push({ text, id, level });
+  }
+
+  return toc;
+}
+
+function addIdsToHeadings(htmlContent: string) {
+  const headingRegex = /<h([1-6])([^>]*)>(.*?)<\/h[1-6]>/g;
+  
+  return htmlContent.replace(headingRegex, (match, level, attrs, content) => {
+    const id = content.toLowerCase().replace(/<[^>]+>/g, '').replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+    return `<h${level} id="${id}"${attrs}>${content}</h${level}>`;
+  });
+}
+
+export async function getStaticPaths() {
+  const response = await fetch(`${import.meta.env.BLOG_URL}/posts?_embed`);
+  const posts = await response.json();
+
+  return posts.map((post: any) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+const { post }: { post: any } = Astro.props;
+const readingTime = calculateReadingTime(post.content.rendered);
+const contentWithIds = addIdsToHeadings(post.content.rendered);
+const tableOfContents = generateTableOfContents(post.content.rendered)
+---
+
+<Layout title={post.title.rendered}>
+  <article class="max-w-4xl mx-auto p-8">
+    <div class="flex gap-12 items-center mb-12">
+      <div class="w-2/6 relative">
+        <div class="h-full -z-10 absolute w-full bg-secondary rotate-6 rounded"></div>
+        <img width="300" src={post._embedded['wp:featuredmedia'][0].source_url} alt={post.title.rendered} class="rounded object-cover z-20 block" />
+      </div>
+      <div class="w-4/6">
+        <Categories client:load categories={post.categories} />
+        <h1 class=" mt-5 text-1xl font-bold mb-6">{post.title.rendered}</h1>
+        <div class="flex gap-4 items-center">
+          <p class="text-sm text-gray-400 border-r pr-4">Publié le {new Date(post.date).toLocaleDateString()}</p>
+          <p class="flex gap-2 text-sm items-center text-gray-400">Rédigé par <Author authorId={post.author} client:load /></p>
+        </div>
+        <div>
+          <p class="text-sm inline-flex items-center border px-2 py-1 font-bold rounded border-primary text-primary">{readingTime} min de lecture</p>
+        </div>
+      </div>
+    </div>
+
+        <!-- Affichage du sommaire -->
+    <nav aria-label="Table of Contents" class="mb-8 bg-primary px-8 py-2 rounded-lg">
+      <h2 class="text-secondary">Sommaire</h2>
+      <ol class="text-secondary p-0 pl-4 list-decimal marker:text-secondary">
+        {tableOfContents.map(item => (
+          <li>
+            <a href={`#${item.id}`} class="font-bold text-secondary">
+              {item.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <div set:html={contentWithIds}></div>
+
+    <div>
+      <AuthorCard authorId={post.author} client:load />
+    </div>
+  </article>
+</Layout>
