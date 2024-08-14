@@ -1,0 +1,46 @@
+---
+import '@/styles/globals.css'
+import { Button } from "@/components/ui/button"
+import Logo from "@/components/ui/Logo.astro"
+import { HiOutlinePhone } from "react-icons/hi2";
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Alva courtage en travaux de rénovation et simulation de prix et estimation" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		  <link rel="preload" href="/fonts/aventa/Aventa-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+
+		<title>{title}</title>
+	</head>
+	<body>
+    <nav class="flex items-center justify-between px-12">
+      <div>
+        <Logo />
+      </div>
+      <div>
+        <Button className="text-secondary font-bold"><HiOutlinePhone className="mr-2 stroke-secondary" />  Contacter un expert</Button>
+      </div>
+    </nav>
+		<slot />
+    <div class="bg-secondary py-4 px-12">
+      <div>
+        <p class="text-center font-bold text-sm">Votre simulation par ALVA</p>
+      </div>
+    </div>
+	</body>
+</html>
+<style is:global>
+	html {
+		background: #fff;
+	}
+</style>
