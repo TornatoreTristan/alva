@@ -1,16 +1,40 @@
-const Resultats = ({ formData }: any) => {
-  const { logement, configuration, isolation, equipements, ventilation, informations } = formData;
+import { useEffect, useState } from 'react';
 
-  // Exemple de calcul basé sur les informations collectées
+const Resultats = () => {
+  const [data, setData] = useState<any>({});
+
+  useEffect(() => {
+    const logementData = JSON.parse(sessionStorage.getItem('logementData') || '{}');
+    const configurationData = JSON.parse(sessionStorage.getItem('configurationData') || '{}');
+    const isolationData = JSON.parse(sessionStorage.getItem('isolationData') || '{}');
+    const equipementsData = JSON.parse(sessionStorage.getItem('equipementsData') || '{}');
+    const ventilationData = JSON.parse(sessionStorage.getItem('ventilationData') || '{}');
+    const informationsData = JSON.parse(sessionStorage.getItem('informationsData') || '{}');
+    const maisonData = JSON.parse(sessionStorage.getItem('maisonData') || '{}');
+    const appartementData = JSON.parse(sessionStorage.getItem('appartementData') || '{}');
+
+    setData({
+      logement: logementData,
+      configuration: configurationData,
+      isolation: isolationData,
+      equipements: equipementsData,
+      ventilation: ventilationData,
+      informations: informationsData,
+      maison: maisonData,
+      appartement: appartementData,
+    });
+  }, []);
+
   const calculateDpeScore = () => {
     let score = 0;
 
-    // Logique de calcul
-    if (logement.selectedType) score += 10;
-    if (configuration.selectedShape) score += 20;
-    if (isolation.murIsolation) score += 15;
-    if (equipements.heating) score += 25;
-    if (informations.motif) score += 5;
+    // Logique de calcul (exemple simple)
+    if (data.logement?.selectedType) score += 10;
+    if (data.configuration?.selectedShape) score += 20;
+    if (data.isolation?.murIsolation) score += 15;
+    if (data.equipements?.selectedHeatingType) score += 25;
+    if (data.ventilation?.climatisation) score += 10;
+    if (data.informations?.motif) score += 5;
 
     return score;
   };
@@ -23,11 +47,26 @@ const Resultats = ({ formData }: any) => {
 
       <div className="mb-8">
         <h3 className="text-xl font-bold mb-4">Résumé des informations</h3>
-        <p><strong>Type de logement :</strong> {logement.selectedType}</p>
-        <p><strong>Forme de la maison :</strong> {configuration.selectedShape}</p>
-        <p><strong>Isolation des murs :</strong> {isolation.murIsolation}</p>
-        <p><strong>Énergie utilisée pour le chauffage :</strong> {equipements.heating}</p>
-        <p><strong>Motif de simulation :</strong> {informations.motif}</p>
+        <p><strong>Type de logement :</strong> {data.logement?.selectedType}</p>
+        {data.logement?.selectedType === 'maison' ? (
+          <>
+            <p><strong>Forme de la maison :</strong> {data.maison?.shape}</p>
+            <p><strong>Mitoyenneté :</strong> {data.maison?.adjacency}</p>
+            <p><strong>Nombre d'étages :</strong> {data.maison?.floors}</p>
+            <p><strong>Surface habitable :</strong> {data.maison?.surface} m²</p>
+          </>
+        ) : (
+          <>
+            <p><strong>Emplacement de l'appartement :</strong> {data.appartement?.emplacement}</p>
+            <p><strong>Type d'appartement :</strong> {data.appartement?.type}</p>
+            <p><strong>Nombre de façades :</strong> {data.appartement?.facades}</p>
+          </>
+        )}
+        <p><strong>Énergie pour le chauffage :</strong> {data.equipements?.selectedHeatingEnergy}</p>
+        <p><strong>Énergie pour l'eau chaude :</strong> {data.equipements?.selectedHotWaterEnergy}</p>
+        <p><strong>Climatisation :</strong> {data.ventilation?.climatisation ? 'Oui' : 'Non'}</p>
+        <p><strong>Type de ventilation :</strong> {data.ventilation?.ventilationType}</p>
+        <p><strong>Motif de simulation :</strong> {data.informations?.motif}</p>
       </div>
 
       <div className="text-center">
