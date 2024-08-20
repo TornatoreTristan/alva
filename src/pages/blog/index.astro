@@ -4,22 +4,23 @@ import { FetchPosts } from '@/lib/fetchPosts';
 import Category from '@/components/ui/category';
 
 const posts = await FetchPosts();
-
-console.log(posts)
 ---
 
 <Layout title="Actualités pour vos travaux de rénovation et les aides & financements | ALVA">
   <div class="px-12 py-24 flex justify-center flex-col items-center">
     <div class="w-6/12 text-center">
       <h1>Toute l'actualité sur la rénovation énergétique</h1>
-      <p>Retrouvez ici tous les articles sur l'actualité de la rénovation de biens immobiliers. Une ressource d'informations indispensable pour tous ceux qui veulent optimiser au mieux leur projet de rénovation avec l'objectif de faire des économies d'énergies et de valoriser la valeur de leur bien ! Nous rédigeons nos articles en lien étroit avec nos partenaires expert de leur domaine : Diagnostiqueur Immobilier, Courtier en travaux, Artisans, courtier en crédits et bien plus encore.</p>
+      <p>
+        Retrouvez ici tous les articles sur l'actualité de la rénovation de biens immobiliers...
+      </p>
     </div>
+
     <div class="mt-24">
       <ul class="flex gap-4 justify-center">
         {posts.map((post: any) => (
           <li class="w-1/4 border rounded-lg">
             <a href={`/blog/${post.slug}`}>
-              <div class="">
+              <div>
                 <img class="h-[150px] w-full object-cover rounded-t-lg" src={post.featured_image_url} alt="">
               </div>
               <div class="p-8">
