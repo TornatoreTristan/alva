@@ -1,12 +1,23 @@
-FROM node:lts AS runtime
+# Utiliser une image Node.js officielle comme image de base
+FROM node:18-alpine
+
+# Créer un répertoire pour l'application
 WORKDIR /app
 
+# Copier les fichiers package.json et package-lock.json (ou yarn.lock)
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm install
+
+# Copier le reste des fichiers de l'application
 COPY . .
 
-RUN npm install
+# Construire l'application
 RUN npm run build
 
-ENV HOST=0.0.0.0
-ENV PORT=4321
-EXPOSE 4321
-CMD node ./dist/server/entry.mjs
+# Exposer le port sur lequel l'application sera servie
+EXPOSE 3000
+
+# Démarrer l'application
+CMD ["npm", "start"]
