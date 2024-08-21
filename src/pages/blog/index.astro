@@ -17,7 +17,7 @@ const posts = await FetchPosts();
 
     <div class="mt-24">
       <ul class="flex gap-4 justify-center">
-        {posts.map((post: any) => (
+        {posts.map((post:any) => (
           <li class="w-1/4 border rounded-lg">
             <a href={`/blog/${post.slug}`}>
               <div>

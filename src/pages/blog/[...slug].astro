@@ -4,6 +4,8 @@ import Categories from '@/components/ui/category';
 import Author from '@/components/ui/author'
 import AuthorCard from '@/components/ui/authorCard'
 
+export const prerender = true;
+
 function calculateReadingTime(text: string) {
   const wordsPerMinute = 200; 
   const textLength = text.split(/\s+/).length; 
@@ -54,9 +56,11 @@ export async function getStaticPaths() {
   const response = await fetch(`${import.meta.env.BLOG_URL}/posts?_embed`);
   const posts = await response.json();
 
+  console.log(posts);
+
   return posts.map((post: any) => ({
     params: { slug: post.slug },
-    props: { post }
+    props: { post },
   }));
 }
 
@@ -68,6 +72,7 @@ const contentWithAbsoluteUrls = convertRelativeUrlsToAbsolute(contentWithIds, ba
 const tableOfContents = generateTableOfContents(post.content.rendered)
 ---
 
+{post.content?.rendered && (
 <Layout title={post.title.rendered}>
   <article class="max-w-4xl mx-auto p-8">
     <div class="flex gap-12 items-center mb-12">
@@ -109,3 +114,4 @@ const tableOfContents = generateTableOfContents(post.content.rendered)
     </div>
   </article>
 </Layout>
+)}
