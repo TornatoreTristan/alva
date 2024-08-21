@@ -13,25 +13,25 @@ import {
 const components: { title: string; href: string; description: string }[] = [
   {
     title: "Chauffage",
-    href: "/",
+    href: "/chauffage",
     description:
       "Tout ce qu'il faut savoir sur les différents types de chauffage.",
   },
   {
     title: "Isolation",
-    href: "/",
+    href: "/isolation",
     description:
       "Des articles et des ressources pour vous aider à isoler votre logement.",
   },
   {
     title: "Solaire",
-    href: "/",
+    href: "/solaire",
     description:
       "Preparez au mieux votre projet de panneaux solaires photovoltaïques.",
   },
   {
     title: "Aides & Primes",
-    href: "/",
+    href: "/aides-et-primes",
     description: "Découvrez les aides et primes disponibles pour vos travaux.",
   },
   {
@@ -42,7 +42,7 @@ const components: { title: string; href: string; description: string }[] = [
   },
   {
     title: "Partenaires",
-    href: "/",
+    href: "/partenaires",
     description:
       "Découvrez nos partenaires spécialisés dans la rénovation énergétique.",
   },
@@ -59,7 +59,7 @@ export function PrimaryNav() {
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <a
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-primary bg-gradient-to-b from-muted/0 to-muted p-6 no-underline outline-none focus:shadow-md"
                     href="/"
                   >
                     <div className="mb-2 mt-4 text-lg font-medium">
@@ -100,7 +100,7 @@ export function PrimaryNav() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <a href="/docs">
+          <a href="/courtiers-travaux">
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Courtage en travaux
             </NavigationMenuLink>

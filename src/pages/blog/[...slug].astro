@@ -56,8 +56,6 @@ export async function getStaticPaths() {
   const response = await fetch(`${import.meta.env.BLOG_URL}/posts?_embed`);
   const posts = await response.json();
 
-  console.log(posts);
-
   return posts.map((post: any) => ({
     params: { slug: post.slug },
     props: { post },
