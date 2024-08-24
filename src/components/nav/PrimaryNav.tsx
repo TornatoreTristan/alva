@@ -77,7 +77,7 @@ export function PrimaryNav() {
               <ListItem href="/docs/installation" title="Coût travaux">
                 Estimez le coût de vos travaux de rénovation.
               </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Aides & Financements">
+              <ListItem href="/simulateurs/financements" title="Aides & Financements">
                 Simulez les aides et financements disponibles pour vos travaux.
               </ListItem>
             </ul>
