@@ -90,7 +90,7 @@ const Isolation = ({ nextStep }: any) => {
             >
               <input
                 type="radio"
-                id={option}
+                id={`murs-${option}`}
                 name="murIsolation"
                 value={option}
                 checked={murIsolation === option}
@@ -126,7 +126,7 @@ const Isolation = ({ nextStep }: any) => {
               >
                 <input
                   type="radio"
-                  id={option}
+                  id={`toit-${option}`}
                   name="toiture"
                   value={option}
                   checked={toiture === option}
@@ -163,7 +163,7 @@ const Isolation = ({ nextStep }: any) => {
               >
                 <input
                   type="radio"
-                  id={option}
+                  id={`combles-${option}`}
                   name="combles"
                   value={option}
                   checked={combles === option}
@@ -285,7 +285,7 @@ const Isolation = ({ nextStep }: any) => {
               >
                 <input
                   type="radio"
-                  id={option}
+                  id={`vitrage-${option}`}
                   name="vitrage"
                   value={option}
                   checked={vitrage === option}

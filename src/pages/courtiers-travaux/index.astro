@@ -1,12 +1,35 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { Button } from '@/components/ui/button';
 ---
 
 <Layout title="courtiers en travaux">
   <div>
     <div class="w-1/2 mx-auto text-center py-12">
-      <h1 class="text-6xl leading-[4.5rem]">Facilitez votre rénovation énergétique</h1>
+      <h1 class="text-6xl leading-[4.5rem]">Facilitez votre rénovation énergétique pour des travaux en toute séreinité</h1>
       <p>Nos courtiers en travaux s'occupent pour vous de trouver le meilleur prix auprès d'un réseau de partenaires artisans qualifiés et experts de leur domaine</p>
+    </div>
+    <div class="py-12 w-2/3 mx-auto flex gap-12 items-center">
+      <div class="w-1/2">
+        <h2 class="text-4xl">Notre méhtode pour des travaux en toute tranquilité</h2>
+        <p class="mb-3">Vous avez un projet, mais ne savez pas par où commencer, quel artisan faire intervenir en premier, ou comment organiser votre chantier ?</p>
+        <p>Nos courtiers s'occupent pour vous de l'essentiel. Avec une expérience de plus de 10 ans dans les chantiers de rénovation de moyenne et grande ampleur, nous vous donnons accès à notre réseau de partenaires de confiance avec des tarifs préférentiels.</p>
+        <a href="/simulateurs/bilan-dpe"><Button className="text-secondary font-bold mt-6">Trouvez votre courtier</Button></a>
+      </div>
+      <div class="w-1/2">
+        <div>
+          <h3>Un interlocuteur unique</h3>
+          <p>Votre interlocuteur centralise toutes vos recherches de professionnels du bâtiment</p>
+        </div>
+        <div>
+          <h3>Devis négociés</h3>
+          <p>Nous organisons pour vous toutes les visites d’entreprises et négocions en amont les meilleurs tarifs</p>
+        </div>
+        <div>
+          <h3>Artisans sélectionnés</h3>
+          <p>Nous sélectionnons des artisans de qualité, qui répondent à nos critères rigoureux</p>
+        </div>
+      </div>
     </div>
   </div>
 </Layout>

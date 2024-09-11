@@ -47,7 +47,7 @@ const Equipements = ({ nextStep }: any) => {
             >
               <input
                 type="radio"
-                id={option}
+                id={`chauffage-${option}`}
                 name="chauffageEnergie"
                 value={option}
                 checked={chauffageEnergie === option}
@@ -83,7 +83,7 @@ const Equipements = ({ nextStep }: any) => {
               >
                 <input
                   type="radio"
-                  id={option}
+                  id={`eauchaude-${option}`}
                   name="eauChaudeEnergie"
                   value={option}
                   checked={eauChaudeEnergie === option}

@@ -9,7 +9,6 @@ const Logement = ({ nextStep }: { nextStep: () => void }) => {
   const [showConstructionYear, setShowConstructionYear] = useState(false);
   const [selectedYear, setSelectedYear] = useState("");
 
-  // Charger les données du sessionStorage au montage du composant
   useEffect(() => {
     const savedData = sessionStorage.getItem('logementData');
     if (savedData) {
@@ -22,7 +21,6 @@ const Logement = ({ nextStep }: { nextStep: () => void }) => {
     }
   }, []);
 
-  // Mettre à jour le sessionStorage à chaque changement de données
   useEffect(() => {
     const logementData = {
       selectedType,
@@ -39,12 +37,12 @@ const Logement = ({ nextStep }: { nextStep: () => void }) => {
 
   const handlePostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (/^\d{0,5}$/.test(value)) { // Limiter l'entrée à 5 chiffres
+    if (/^\d{0,5}$/.test(value)) {
       setPostalCode(value);
       if (value.length === 5) {
-        setShowConstructionYear(true); // Affiche la question de l'année de construction dès que 5 chiffres sont entrés
+        setShowConstructionYear(true); 
       } else {
-        setShowConstructionYear(false); // Cache la question si le code postal n'est pas complet
+        setShowConstructionYear(false); 
       }
     }
   };
@@ -127,7 +125,7 @@ const Logement = ({ nextStep }: { nextStep: () => void }) => {
             />
           </div>
           {postalCode.length !== 5 && (
-            <p className="text-red-500 mt-2">Veuillez entrer un code postal valide de 5 chiffres.</p>
+            <p className="text-primary mt-2 text-center text-sm">Veuillez entrer un code postal valide de 5 chiffres.</p>
           )}
         </div>
       )}
