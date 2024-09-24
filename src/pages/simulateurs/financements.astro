@@ -1,7 +1,8 @@
 ---
-import SimulateursLayout from "@/layouts/SimulateursLayout.astro"
+import SimulateursLayout from "@/layouts/SimulateursLayout.astro";
+import SimulateurFinancements from "./simulateur-financements/simulateur-financements";
 ---
 
-<SimulateursLayout title="Obtenez la note de votre DPE | Bilan énergétique en ligne en 3 minutes">
-
+<SimulateursLayout title="Obtenez le montant des vos aides & Financements en 3 minutes">
+    <SimulateurFinancements client:only="react" />
 </SimulateursLayout>

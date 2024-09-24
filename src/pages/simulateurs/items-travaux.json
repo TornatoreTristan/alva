@@ -1,0 +1,44 @@
+[
+    {
+        "nom_travaux": "Fenêtres double vitrage performant",
+        "categorie": "fenetres",
+        "prix_moyen": 4500,
+        "note_priorite": 60
+    },
+    {
+        "nom_travaux": "Isolation des murs par l'intérieurs",
+        "categorie": "isolation",
+        "prix_moyen": 7000,
+        "note_priorite": 80
+    },
+    {
+        "nom_travaux": "Isolation des murs par l'extérieur",
+        "categorie": "isolation",
+        "prix_moyen": 7000,
+        "note_priorite": 80
+    },
+    {
+        "nom_travaux": "Isolation des sols",
+        "categorie": "isolation",
+        "prix_moyen": 3500,
+        "note_priorite": 75
+    },
+    {
+        "nom_travaux": "VMC double flux",
+        "categorie": "ventilation",
+        "prix_moyen": 5000,
+        "note_priorite": 50
+    },
+    {
+        "nom_travaux": "Pompe à chaleur air-eau",
+        "categorie": "chauffage",
+        "prix_moyen": 12000,
+        "note_priorite": 90
+    },
+    {
+        "nom_travaux": "Chauffe-eau thermodynamique",
+        "categorie": "chauffage",
+        "prix_moyen": 2000,
+        "note_priorite": 40
+    }
+]

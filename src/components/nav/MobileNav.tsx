@@ -13,7 +13,7 @@ const MobileNav = () => {
             </a>
           </li>
           <li>
-            <a href="/simulateurs/financements">
+            <a href="/simulateurs/bilan-travaux">
               <div>
                 <h2 className="mb-0">Estimez vos travaux</h2>
                 <p className="text-xs">Simulez le prix de vos travaux de rénovation énergétique.</p>

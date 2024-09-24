@@ -74,7 +74,7 @@ export function PrimaryNav() {
               <ListItem href="/simulateurs/bilan-dpe" title="Bilan énergétique">
                 Estimez la note DPE de votre bien immobilier.
               </ListItem>
-              <ListItem href="/docs/installation" title="Coût travaux">
+              <ListItem href="/simulateurs/bilan-travaux" title="Coût travaux">
                 Estimez le coût de vos travaux de rénovation.
               </ListItem>
               <ListItem href="/simulateurs/financements" title="Aides & Financements">
