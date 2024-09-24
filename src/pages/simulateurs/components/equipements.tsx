@@ -13,6 +13,8 @@ const Equipements = ({ nextStep }: any) => {
     const logementData = JSON.parse(sessionStorage.getItem('logementData') || '{}');
     setIsMaison(logementData.selectedType === 'maison');
     setIsAppartement(logementData.selectedType === 'appartement');
+    setChauffageEnergie(logementData.chauffageEnergie || '');
+    setEauChaudeEnergie(logementData.eauChaudeEnergie || '');
   }, []);
 
   useEffect(() => {
@@ -21,13 +23,21 @@ const Equipements = ({ nextStep }: any) => {
     }
   }, [chauffageEnergie, eauChaudeEnergie]);
 
+  const updateSessionStorage = (key: string, value: string) => {
+    const logementData = JSON.parse(sessionStorage.getItem('logementData') || '{}');
+    logementData[key] = value;
+    sessionStorage.setItem('logementData', JSON.stringify(logementData));
+  };
+
   const handleChauffageEnergieSelect = (option: string) => {
     setChauffageEnergie(option);
+    updateSessionStorage('chauffageEnergie', option);
     setShowEauChaudeEnergie(true);
   };
 
   const handleEauChaudeEnergieSelect = (option: string) => {
     setEauChaudeEnergie(option);
+    updateSessionStorage('eauChaudeEnergie', option);
   };
 
   return (

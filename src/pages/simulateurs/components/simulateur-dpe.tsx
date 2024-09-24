@@ -39,15 +39,15 @@ const SimulateurDPE = () => {
       case 1:
         return <Logement data={formData.logement} updateData={(data: any) => updateFormData('logement', data)} nextStep={() => setCurrentStep(2)} />;
       case 2:
-        return <Configuration data={formData.isolation} updateData={(data: any) => updateFormData('configuration', data)} nextStep={() => setCurrentStep(3)} />;
+        return <Configuration data={formData.configuration} updateData={(data: any) => updateFormData('configuration', data)} nextStep={() => setCurrentStep(3)} />;
       case 3:
         return <Isolation data={formData.isolation} updateData={(data: any) => updateFormData('isolation', data)} nextStep={() => setCurrentStep(4)} />;
       case 4:
         return <Equipements data={formData.equipements} updateData={(data: any) => updateFormData('equipements', data)} nextStep={() => setCurrentStep(5)} />;
       case 5:
-        return <Ventilation data={formData.equipements} updateData={(data: any) => updateFormData('ventilation', data)} nextStep={() => setCurrentStep(6)} />;
+        return <Ventilation data={formData.ventilation} updateData={(data: any) => updateFormData('ventilation', data)} nextStep={() => setCurrentStep(6)} />;
       case 6:
-        return <Informations data={formData.informations} updateData={(data: any) => updateFormData('informations', data)} nextStep={() => setCurrentStep(7)}  />;
+        return <Informations data={formData.informations} updateData={(data: any) => updateFormData('informations', data)} nextStep={() => setCurrentStep(7)} />;
       case 7:
         return <Resultats formData={formData} />;
       default:
