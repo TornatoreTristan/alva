@@ -29,7 +29,7 @@ const SimulateurTravaux = () => {
               };
     });
 
-    console.log(formData);
+    // console.log(formData);
 
     useEffect(() => {
         sessionStorage.setItem("formData", JSON.stringify(formData));
