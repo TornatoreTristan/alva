@@ -26,10 +26,11 @@ const Configuration = ({ nextStep }: { nextStep: () => void }) => {
       }
 
       if (appartement) {
-        const { emplacement, type, facades } = appartement;
+        const { emplacement, type, facades, surface } = appartement;
         setEmplacement(emplacement);
         setType(type);
         setFacades(facades);
+        setSurface(surface);
       }
     }
   }, []);
@@ -40,9 +41,9 @@ const Configuration = ({ nextStep }: { nextStep: () => void }) => {
   }, [shape, adjacency, floors, surface]);
 
   useEffect(() => {
-    const appartementData = { emplacement, type, facades };
+    const appartementData = { emplacement, type, facades, surface };
     updateSessionStorage("appartement", appartementData);
-  }, [emplacement, type, facades]);
+  }, [emplacement, type, facades, surface]);
 
   const handleFacadeChange = (increment: boolean) => {
     setFacades((prev) => (increment ? prev + 1 : prev > 0 ? prev - 1 : 0));
@@ -135,22 +136,6 @@ const Configuration = ({ nextStep }: { nextStep: () => void }) => {
               </div>
             </div>
           )}
-
-          {floors && (
-            <div className="mb-8">
-              <h4 className="text-xl font-bold mb-4">Quelle est sa surface habitable ?</h4>
-              <div className="flex justify-center">
-                <input
-                  type="text"
-                  value={surface}
-                  onChange={(e) => setSurface(e.target.value)}
-                  placeholder="Entrez votre surface habitable en m²"
-                  className="p-2 border rounded-lg focus:outline-none focus:border-primary focus:border-2"
-                />
-              </div>
-              {surface && <p className="text-primary mt-2">Surface habitable enregistrée: {surface} m²</p>}
-            </div>
-          )}
         </>
       )}
 
@@ -224,6 +209,22 @@ const Configuration = ({ nextStep }: { nextStep: () => void }) => {
             </div>
           )}
         </>
+      )}
+
+      {floors && (
+        <div className="mb-8">
+          <h4 className="text-xl font-bold mb-4">Quelle est sa surface habitable ?</h4>
+          <div className="flex justify-center">
+            <input
+              type="text"
+              value={surface}
+              onChange={(e) => setSurface(e.target.value)}
+              placeholder="Entrez votre surface habitable en m²"
+              className="p-2 border rounded-lg focus:outline-none focus:border-primary focus:border-2"
+            />
+          </div>
+          {surface && <p className="text-primary mt-2">Surface habitable enregistrée: {surface} m²</p>}
+        </div>
       )}
 
       {isNextButtonVisible && (

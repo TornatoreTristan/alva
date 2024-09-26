@@ -148,35 +148,15 @@ const Situation = ({ nextStep }: { nextStep: () => void }) => {
       )}
 
       <div className="mt-8">
-        <h4 className="text-2xl font-bold text-center mb-4">Quel est votre revenu fiscal de référence ?</h4>
-        <div className="flex justify-center gap-2">
-          {["inférieur à 32 003€", "inférieur à 40 003€", "inférieur à 51 282€", "inférieur à 72 401€", "supérieur à 72 401€"].map((revenueOption) => (
-            <div
-              key={revenueOption}
-              className={`flex items-center justify-between p-6 border rounded-lg cursor-pointer transition-all duration-300 ${
-                revenue === revenueOption ? "border-primary bg-secondary" : "border-gray-200 text-sm bg-white"
-              }`}
-              onClick={() => handleRevenueSelect(revenueOption)}
-            >
-              <input
-                type="radio"
-                id={revenueOption}
-                name="constructionrevenueOption"
-                value={revenueOption}
-                checked={revenue === revenueOption}
-                onChange={() => handleRevenueSelect(revenueOption)}
-                className="hidden"
-              />
-              <label htmlFor={revenueOption} className="flex gap-3 items-center cursor-pointer">
-                <span className="text-lg font-semibold text-gray-800">{revenueOption}</span>
-              </label>
-              <div className="ml-4">
-                <div className={`w-6 h-6 border-2 rounded-full flex items-center justify-center ${revenue === revenueOption ? "border-primary" : "border-gray-400"}`}>
-                  {revenue === revenueOption && <div className="w-3 h-3 bg-primary rounded-full"></div>}
-                </div>
-              </div>
-            </div>
-          ))}
+        <h3 className="text-2xl font-bold text-center mb-4">Quel est votre revenu fiscal de référence ?</h3>
+        <div className="flex justify-center">
+          <input
+            type="number"
+            value={revenue}
+            onChange={(e) => handleRevenueSelect(e.target.value)}
+            placeholder="Revenu fiscal"
+            className="p-2 border rounded-lg focus:outline-none focus:border-primary focus:border-2"
+          />
         </div>
       </div>
 
