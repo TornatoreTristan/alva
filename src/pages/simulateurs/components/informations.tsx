@@ -29,6 +29,7 @@ const Informations = ({ nextStep, btn }: any) => {
       telephone,
       optIn,
     };
+    console.log(optIn);
     updateSessionStorage("informations", equipementsData);
 
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -38,7 +39,7 @@ const Informations = ({ nextStep, btn }: any) => {
     } else {
       setIsButtonDisabled(true);
     }
-  }, [motif, email, telephone]);
+  }, [motif, email, telephone, optIn]);
 
   const handleMotifChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setMotif(e.target.value);

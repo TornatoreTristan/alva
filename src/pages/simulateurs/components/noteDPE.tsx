@@ -1,35 +1,35 @@
 import { useState, useEffect } from "react";
 import { updateSessionStorage } from "../utils/simulateur-utils";
 
-const NoteDEP = ({ nextStep }: any) => {
-  const [selectedNoteDEP, setSelectedNoteDEP] = useState<string | null>(null); // Une seule note sélectionnée
+const noteDPE = ({ nextStep }: any) => {
+  const [selectednoteDPE, setSelectednoteDPE] = useState<string | null>(null); // Une seule note sélectionnée
   const [isNextButtonVisible, setIsNextButtonVisible] = useState(false);
 
   // Charger la note DPE depuis sessionStorage au montage
   useEffect(() => {
     const logementData = sessionStorage.getItem("logementData");
     if (logementData) {
-      const { noteDEP } = JSON.parse(logementData);
-      if (noteDEP) {
-        setSelectedNoteDEP(noteDEP); // Restaurer la note DPE si elle existe
+      const { noteDPE } = JSON.parse(logementData);
+      if (noteDPE) {
+        setSelectednoteDPE(noteDPE); // Restaurer la note DPE si elle existe
       }
     }
   }, []);
 
   // Mettre à jour sessionStorage lorsque la note DPE change
   useEffect(() => {
-    if (selectedNoteDEP) {
-      updateSessionStorage("noteDEP", selectedNoteDEP); // Sauvegarder dans sessionStorage
+    if (selectednoteDPE) {
+      updateSessionStorage("noteDPE", selectednoteDPE); // Sauvegarder dans sessionStorage
     }
-  }, [selectedNoteDEP]);
+  }, [selectednoteDPE]);
 
   // Vérifie si une note est sélectionnée pour afficher le bouton Suivant
   useEffect(() => {
-    setIsNextButtonVisible(!!selectedNoteDEP); // Afficher le bouton si une note est sélectionnée
-  }, [selectedNoteDEP]);
+    setIsNextButtonVisible(!!selectednoteDPE); // Afficher le bouton si une note est sélectionnée
+  }, [selectednoteDPE]);
 
   const handleNoteSelect = (note: string) => {
-    setSelectedNoteDEP(note); // Sélectionner une note
+    setSelectednoteDPE(note); // Sélectionner une note
   };
 
   const notes = ["A", "B", "C", "D", "E", "F", "G"]; // Notes DPE possibles
@@ -43,17 +43,17 @@ const NoteDEP = ({ nextStep }: any) => {
           <div
             key={note}
             className={`flex items-center justify-between p-6 border rounded-lg cursor-pointer transition-all duration-300 ${
-              selectedNoteDEP === note ? "border-primary bg-secondary" : "border-gray-200 bg-white"
+              selectednoteDPE === note ? "border-primary bg-secondary" : "border-gray-200 bg-white"
             }`}
             onClick={() => handleNoteSelect(note)}
           >
-            <input type="radio" id={note} name="noteDEP" value={note} checked={selectedNoteDEP === note} onChange={() => handleNoteSelect(note)} className="hidden" />
+            <input type="radio" id={note} name="noteDPE" value={note} checked={selectednoteDPE === note} onChange={() => handleNoteSelect(note)} className="hidden" />
             <label htmlFor={note} className="flex gap-3 items-center cursor-pointer">
               <span className="text-lg font-semibold text-gray-800">{note}</span>
             </label>
             <div className="ml-4">
-              <div className={`w-6 h-6 border-2 rounded-full flex items-center justify-center ${selectedNoteDEP === note ? "border-primary" : "border-gray-400"}`}>
-                {selectedNoteDEP === note && <div className="w-3 h-3 bg-primary rounded-full"></div>}
+              <div className={`w-6 h-6 border-2 rounded-full flex items-center justify-center ${selectednoteDPE === note ? "border-primary" : "border-gray-400"}`}>
+                {selectednoteDPE === note && <div className="w-3 h-3 bg-primary rounded-full"></div>}
               </div>
             </div>
           </div>
@@ -71,4 +71,4 @@ const NoteDEP = ({ nextStep }: any) => {
   );
 };
 
-export default NoteDEP;
+export default noteDPE;

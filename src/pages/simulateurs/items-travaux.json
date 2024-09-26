@@ -1,44 +1,44 @@
 [
     {
-        "nom_travaux": "Fenêtres double vitrage performant",
-        "categorie": "fenetres",
-        "prix_moyen": 4500,
-        "note_priorite": 60
+        "name": "Fenêtres double vitrage performant",
+        "category": "fenetres",
+        "price": 4500,
+        "priority": 60
     },
     {
-        "nom_travaux": "Isolation des murs par l'intérieurs",
-        "categorie": "isolation",
-        "prix_moyen": 7000,
-        "note_priorite": 80
+        "name": "Isolation des murs par l'intérieurs",
+        "category": "isolation",
+        "price": 7000,
+        "priority": 80
     },
     {
-        "nom_travaux": "Isolation des murs par l'extérieur",
-        "categorie": "isolation",
-        "prix_moyen": 7000,
-        "note_priorite": 80
+        "name": "Isolation des murs par l'extérieur",
+        "category": "isolation",
+        "price": 7000,
+        "priority": 80
     },
     {
-        "nom_travaux": "Isolation des sols",
-        "categorie": "isolation",
-        "prix_moyen": 3500,
-        "note_priorite": 75
+        "name": "Isolation des sols",
+        "category": "isolation",
+        "price": 3500,
+        "priority": 75
     },
     {
-        "nom_travaux": "VMC double flux",
-        "categorie": "ventilation",
-        "prix_moyen": 5000,
-        "note_priorite": 50
+        "name": "VMC double flux",
+        "category": "ventilation",
+        "price": 5000,
+        "priority": 50
     },
     {
-        "nom_travaux": "Pompe à chaleur air-eau",
-        "categorie": "chauffage",
-        "prix_moyen": 12000,
-        "note_priorite": 90
+        "name": "Pompe à chaleur air-eau",
+        "category": "chauffage",
+        "price": 12000,
+        "priority": 90
     },
     {
-        "nom_travaux": "Chauffe-eau thermodynamique",
-        "categorie": "chauffage",
-        "prix_moyen": 2000,
-        "note_priorite": 40
+        "name": "Chauffe-eau thermodynamique",
+        "category": "Eau Chaude",
+        "price": 2000,
+        "priority": 40
     }
 ]

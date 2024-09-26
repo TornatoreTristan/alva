@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { updateSessionStorage } from "../utils/simulateur-utils";
 
 const Resultats = () => {
   const [logementData, setLogementData] = useState<any>({});
@@ -8,10 +9,17 @@ const Resultats = () => {
   useEffect(() => {
     const storedLogementData = JSON.parse(sessionStorage.getItem("logementData") || "{}");
     setLogementData(storedLogementData);
-
-    const dpeScoreNumber = calculateDpeScore();
-    setNoteDEP(getDpeRating(dpeScoreNumber));
   }, []);
+
+  useEffect(() => {
+    const dpeScoreNumber = calculateDpeScore();
+    console.log(dpeScoreNumber);
+    setNoteDEP(getDpeRating(dpeScoreNumber));
+  }, [logementData]);
+
+  useEffect(() => {
+    updateSessionStorage("noteDPE", noteDPE);
+  }, [noteDPE]);
 
   const calculateDpeScore = () => {
     let score = 100; // Partons d'un score maximum de 100 (un logement très performant)
@@ -38,7 +46,7 @@ const Resultats = () => {
     }
 
     // 2. Isolation des murs, toit, fenêtres et sous-sol
-    const isolationScores = {
+    const isolationScores: { [key: string]: number } = {
       murIsolation: 15,
       toiture: 10,
       combles: 10,
@@ -49,11 +57,14 @@ const Resultats = () => {
       for (const key in isolationScores) {
         if (logementData.isolation[key]) {
           switch (logementData.isolation[key]) {
-            case "+ de 10 ans":
+            case "Aucun travaux":
               score -= isolationScores[key]; // Moins performant
               break;
+            case "+ de 10 ans":
+              score -= isolationScores[key] / 2; // Moins performant
+              break;
             case "- de 10 ans":
-              score -= isolationScores[key] / 2; // Modérément performant
+              score -= isolationScores[key] / 3; // Modérément performant
               break;
           }
         }
@@ -70,8 +81,8 @@ const Resultats = () => {
     }
 
     // 4. Chauffage : type d'énergie et efficacité
-    if (logementData?.chauffageEnergie) {
-      switch (logementData.chauffageEnergie) {
+    if (logementData?.equipements?.chauffageEnergie) {
+      switch (logementData.equipements?.chauffageEnergie) {
         case "Électricité":
           score -= 20; // Énergie moins efficiente et plus chère
           break;
@@ -91,8 +102,8 @@ const Resultats = () => {
     }
 
     // 5. Eau chaude : type d'énergie
-    if (logementData?.eauChaudeEnergie) {
-      switch (logementData.eauChaudeEnergie) {
+    if (logementData?.equipements?.eauChaudeEnergie) {
+      switch (logementData.equipements?.eauChaudeEnergie) {
         case "Électricité":
           score -= 10;
           break;
@@ -129,9 +140,6 @@ const Resultats = () => {
     if (logementData?.ventilation?.climatisation === "Non") {
       score -= 10; //
     }
-
-    console.log(score);
-    console.log(Math.max(0, Math.min(100, score)));
     // Retourner un score compris entre 0 et 100
     return Math.max(0, Math.min(100, score)); // Le score est limité à cette plage
   };
@@ -250,6 +258,14 @@ const Resultats = () => {
         <p className="text-xl font-semibold mb-4">Votre score DPE estimé est : {noteDPE}</p>
         <p className="text-gray-700">Ce score est une estimation basée sur les informations fournies.</p>
       </div>
+
+      {noteDPE && (
+        <div className="text-center mt-8">
+          <a href="/simulateurs/bilan-travaux" className="px-8 py-4 bg-primary text-white font-bold rounded-lg">
+            Estimez vos travaux
+          </a>
+        </div>
+      )}
     </div>
   );
 };
