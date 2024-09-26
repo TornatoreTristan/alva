@@ -2,14 +2,10 @@
 import { useState } from "react";
 import { HiOutlineCheck } from "react-icons/hi2";
 
-import Aide from "../components/aides";
+import Situation from "../components/situation";
 import Logement from "../components/logement";
-import Isolation from "../components/isolation";
-import Equipements from "../components/equipements";
+import Supplementaire from "../components/supplementaire";
 import Informations from "../components/informations";
-import Configuration from "../components/configuration";
-import Ventilation from "../components/ventilation";
-import Travaux from "../components/travaux";
 import NoteDPE from "../components/noteDPE";
 import Resultats from "./resultats-financement";
 
@@ -17,11 +13,14 @@ const SimulateurTravaux = () => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   // Tableau des labels
-  const labels = ["Aide", "Informations", "Résultats"];
+  const labels = ["Situation", "Logement", "Note DPE", "Supplementaire", "Informations", "Résultats"];
 
   // Tableau des composants avec les étapes automatiques
   const components = [
-    <Aide nextStep={() => setCurrentStepIndex((prev) => prev + 1)} />,
+    <Situation nextStep={() => setCurrentStepIndex((prev) => prev + 1)} />,
+    <Logement nextStep={() => setCurrentStepIndex((prev) => prev + 1)} />,
+    <NoteDPE nextStep={() => setCurrentStepIndex((prev) => prev + 1)} />,
+    <Supplementaire nextStep={() => setCurrentStepIndex((prev) => prev + 1)} />,
     <Informations nextStep={() => setCurrentStepIndex((prev) => prev + 1)} btn="Obtenir mon estimation travaux" />,
     <Resultats />,
   ];
