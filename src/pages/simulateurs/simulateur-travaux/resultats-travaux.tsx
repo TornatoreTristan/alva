@@ -65,6 +65,7 @@ const ResultatsTravaux = () => {
   useEffect(() => {
     const coutTravauxSelectionne = selectedProposition === "complete" ? coutTotalComplete : coutTotalSimple;
     updateSessionStorage("montant_travaux", coutTravauxSelectionne);
+    updateSessionStorage("noteDPENew", selectedProposition === "complete" ? newNoteCompleteDPE : newNoteSimpleDPE);
   }, [selectedProposition]);
 
   const handlePropositionSelect = (proposition: string) => {

@@ -15,9 +15,9 @@ const ResultatsTravaux = () => {
     if (logementData) {
       const allData = JSON.parse(logementData);
       setData(allData);
-      setMontantEmprunte(parseInt(allData?.supplementaire?.priceWork) ?? 0);
-      console.log(allData);
-      console.log(convertDPEToNumber(allData.noteDPE));
+      setMontantEmprunte(parseInt(allData?.montant_travaux) ?? 0);
+      // console.log(allData);
+      // console.log(convertDPEToNumber(allData.noteDPE));
     }
   }, []);
 
@@ -30,7 +30,7 @@ const ResultatsTravaux = () => {
   }, [coutFinal, data, dureeEnMois]);
 
   useEffect(() => {
-    setCoutFinal(parseInt(data?.supplementaire?.priceWork) - aideMontant);
+    setCoutFinal(parseInt(data?.montant_travaux) - (aideMontant || 0));
   }, [aideMontant, montantEmprunte]);
 
   const convertDPEToNumber = (dpe: string) => {
@@ -48,10 +48,11 @@ const ResultatsTravaux = () => {
   };
 
   const fetchData = async () => {
-    // Vérifiez que les données sont complètes
-    if (!data || !data.situation || !data.supplementaire || !data.logement) {
+    console.log(data);
+    // // Vérifiez que les données sont complètes
+    if (!data || !data.situation || !data.supplementaire || !data.logement || !data.montant_travaux || !data.noteDPENew || !data.noteDPE) {
       console.error("Les données sont manquantes ou incomplètes.");
-      return;
+      return false;
     }
 
     // Créer les paramètres d'URL avec URLSearchParams
@@ -61,8 +62,8 @@ const ResultatsTravaux = () => {
     params.append("ménage.personnes", data.situation.nbrOccupant);
     params.append("ménage.revenu", parseInt(data.situation.revenue.replace(/\D/g, "")) || 0);
     params.append("DPE.actuel", convertDPEToNumber(data.noteDPE));
-    params.append("projet.DPE+visé", convertDPEToNumber(data.supplementaire.selectedNewNoteDPE));
-    params.append("projet.travaux", parseInt(data.supplementaire.priceWork.replace(/\D/g, "")) || 0);
+    params.append("projet.DPE+visé", convertDPEToNumber(data.noteDPENew));
+    params.append("projet.travaux", parseInt(data.montant_travaux) || 0);
     params.append("ménage.commune", `'${data.logement.postalCode}'`);
     params.append("logement.propriétaire+occupant", data.situation.isOccupant.toLowerCase());
 
@@ -76,7 +77,7 @@ const ResultatsTravaux = () => {
     params.append("fields", "MPR.accompagnée.montant");
 
     const paramUrl = params.toString().replace(/ /g, "+").replace(/%2B/g, "+");
-    console.log(paramUrl);
+    // console.log(paramUrl);
 
     const url = `https://mesaidesreno.beta.gouv.fr/api/?${paramUrl}`;
     console.log(url);

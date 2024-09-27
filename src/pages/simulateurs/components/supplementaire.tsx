@@ -1,38 +1,47 @@
 import { useState, useEffect } from "react";
-import { updateSessionStorage } from "../utils/simulateur-utils"; // Assurez-vous que ce fichier est correctement défini pour gérer le stockage
+import { updateSessionStorage, updateSessionStorageValue } from "../utils/simulateur-utils"; // Assurez-vous que ce fichier est correctement défini pour gérer le stockage
 
 const Supplementaire = ({ nextStep }: { nextStep: () => void }) => {
-  const [surface, setSurface] = useState("");
-  const [priceWork, setPriceWork] = useState("");
+  const [surface, setSurface] = useState(0);
+  const [priceWork, setPriceWork] = useState(0);
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedNewNoteDPE, setSelectedNewNoteDPE] = useState<string | null>(null);
 
   useEffect(() => {
     const logementData = sessionStorage.getItem("logementData");
     if (logementData) {
-      const { supplementaire, maison, appartement, montant_travaux } = JSON.parse(logementData);
-      if (montant_travaux?.lenght > 0) {
+      const { supplementaire, maison, appartement, montant_travaux, noteDPENew } = JSON.parse(logementData);
+      if (montant_travaux > 0) {
         setPriceWork(montant_travaux);
       }
-      if (maison?.surface?.lenght > 0) {
+      if (maison?.surface) {
         setSurface(maison.surface);
       }
-      if (appartement?.surface?.lenght > 0) {
+      if (appartement?.surface) {
         setSurface(appartement.surface);
       }
       setSelectedYear(supplementaire?.selectedYear);
-      setPriceWork(supplementaire?.priceWork);
-      setSelectedNewNoteDPE(supplementaire?.selectedNewNoteDPE);
-      setSurface(supplementaire?.surface);
-
-      //   setSelectedYear(demande.selectedYear);
+      setSelectedNewNoteDPE(noteDPENew);
     }
   }, []);
 
   useEffect(() => {
-    const supplementaireData = { surface, selectedYear, priceWork, selectedNewNoteDPE };
+    const supplementaireData = { selectedYear };
     updateSessionStorage("supplementaire", supplementaireData);
-  }, [surface, selectedYear, priceWork, selectedNewNoteDPE]);
+  }, [selectedYear]);
+
+  useEffect(() => {
+    updateSessionStorage("noteDPENew", selectedNewNoteDPE);
+  }, [selectedNewNoteDPE]);
+
+  useEffect(() => {
+    updateSessionStorageValue("maison", "surface", surface);
+    updateSessionStorageValue("appartement", "surface", surface);
+  }, [surface]);
+
+  useEffect(() => {
+    updateSessionStorage("montant_travaux", priceWork);
+  }, [priceWork]);
 
   const handleNoteSelect = (note: string) => {
     setSelectedNewNoteDPE(note); // Sélectionner une note
@@ -50,8 +59,8 @@ const Supplementaire = ({ nextStep }: { nextStep: () => void }) => {
         <div className="flex justify-center">
           <input
             type="number"
-            value={surface || ""}
-            onChange={(e) => setSurface(e.target.value ? e.target.value : "0")}
+            value={surface}
+            onChange={(e) => setSurface(e.target.value)}
             placeholder="Nombre en m²"
             className="p-2 border rounded-lg focus:outline-none focus:border-primary focus:border-2"
           />
@@ -84,8 +93,8 @@ const Supplementaire = ({ nextStep }: { nextStep: () => void }) => {
         <div className="flex justify-center">
           <input
             type="number"
-            value={priceWork || ""}
-            onChange={(e) => setPriceWork(e.target.value ? e.target.value : "0")}
+            value={priceWork}
+            onChange={(e) => setPriceWork(parseInt(e.target.value))}
             placeholder="Montant travaux"
             className="p-2 border rounded-lg focus:outline-none focus:border-primary focus:border-2"
           />
