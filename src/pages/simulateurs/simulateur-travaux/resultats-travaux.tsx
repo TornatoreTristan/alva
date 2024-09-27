@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import travauxData from "../items-travaux.json"; // Fichier JSON contenant les données sur les travaux
-import { updateSessionStorage } from "../utils/simulateur-utils";
+import travauxData from "../data/items-travaux.json"; // Fichier JSON contenant les données sur les travaux
+import { updateSessionStorage, getDpeRating } from "../utils/simulateur-utils";
 
 interface Travaux {
   name: string;
   category: string;
   priority: number;
   price: number;
+  score: number;
 }
 
 const ResultatsTravaux = () => {
@@ -15,12 +16,15 @@ const ResultatsTravaux = () => {
   const [propositionComplete, setPropositionComplete] = useState<Travaux[]>([]);
   const [coutTotalComplete, setCoutTotalComplete] = useState<number>(0);
   const [selectedProposition, setSelectedProposition] = useState<string | null>(null);
+  const [noteDPE, setNoteDPE] = useState<string>(""); // Note DPE actuelle
+  const [newNoteSimpleDPE, setNewNoteSimpleDPE] = useState<string>(""); // Nouvelle note DPE après travaux simples
+  const [newNoteCompleteDPE, setNewNoteCompleteDPE] = useState<string>(""); // Nouvelle note DPE après travaux complets
 
   // Charger les données des travaux depuis le sessionStorage
   useEffect(() => {
     const logementData: any = sessionStorage.getItem("logementData");
     if (logementData) {
-      const { travaux } = JSON.parse(logementData);
+      const { travaux, scoreDPE, noteDPE } = JSON.parse(logementData);
 
       const travauxFiltres: Travaux[] = travauxData.filter((travauxItem: Travaux) => travaux.includes(travauxItem.name)).sort((a, b) => b.priority - a.priority);
 
@@ -33,6 +37,27 @@ const ResultatsTravaux = () => {
 
         setCoutTotalComplete(coutTotalTravaux);
         setPropositionComplete(travauxFiltres);
+
+        console.log(travauxFiltres[0]);
+        console.log(travauxFiltres);
+
+        let newScoreSimple = travauxFiltres[0].score;
+        let newScoreComplete = travauxFiltres.reduce((total, item) => total + item.score, 0);
+
+        const scoreOrigine = scoreDPE;
+
+        // Calcul des nouveaux scores après travaux
+        newScoreSimple = scoreOrigine + newScoreSimple;
+        newScoreComplete = scoreOrigine + newScoreComplete;
+
+        // Convertir les scores en notes DPE
+        const simpleDpeRating = getDpeRating(newScoreSimple);
+        const completeDpeRating = getDpeRating(newScoreComplete);
+
+        // Mettre à jour les notes DPE dans l'état
+        setNoteDPE(noteDPE); // Note DPE actuelle
+        setNewNoteSimpleDPE(simpleDpeRating); // Nouvelle note après travaux simples
+        setNewNoteCompleteDPE(completeDpeRating); // Nouvelle note après travaux complets
       }
     }
   }, []);
@@ -59,21 +84,31 @@ const ResultatsTravaux = () => {
         >
           <h4 className="text-lg font-bold">Proposition simple</h4>
           {propositionSimple.length > 0 ? (
-            <ul className="list-disc list-inside">
-              {propositionSimple.map((travaux) => (
-                <li key={travaux.name}>{travaux.name}</li>
-              ))}
-            </ul>
+            <>
+              <ul className="list-disc list-inside">
+                {propositionSimple.map((travaux) => (
+                  <li key={travaux.name}>{travaux.name}</li>
+                ))}
+              </ul>
+              <p>
+                Note DPE actuel : <span className="font-bold">{noteDPE}</span> - Après travaux : <span className="font-bold">{newNoteSimpleDPE}</span>
+              </p>
+            </>
           ) : (
             <p>Aucun travaux simple disponible.</p>
           )}
           <div className="mb-8">
             <h3 className="text-xl font-bold mb-4">Coût moyen des travaux</h3>
             {coutTotalSimple && (
-              <p className="text-lg font-semibold">{coutTotalSimple} €</p>
-              // <p className="text-lg font-semibold">
-              //   {Math.round(coutTotalSimple * 0.8)} € - {Math.round(coutTotalSimple * 1.2)} €
-              // </p>
+              <>
+                <p className="text-lg font-semibold">{coutTotalSimple} €</p>
+                {/*  <p className="text-lg font-semibold">
+                 {Math.round(coutTotalSimple * 0.8)} € - {Math.round(coutTotalSimple * 1.2)} €
+               </p> */}
+                <p>
+                  Note DPE actuel : <span className="font-bold">{noteDPE}</span> - Après travaux : <span className="font-bold">{newNoteSimpleDPE}</span>
+                </p>
+              </>
             )}
           </div>
         </div>
@@ -96,10 +131,12 @@ const ResultatsTravaux = () => {
           <div className="mb-8">
             <h3 className="text-xl font-bold mb-4">Coût moyen des travaux</h3>
             {coutTotalComplete && (
-              <p className="text-lg font-semibold">{coutTotalComplete} €</p>
-              // <p className="text-lg font-semibold">
-              //   {Math.round(coutTotalComplete * 0.8)} € - {Math.round(coutTotalComplete * 1.2)} €
-              // </p>
+              <>
+                <p className="text-lg font-semibold">{coutTotalComplete} €</p>
+                <p>
+                  Note DPE actuel : <span className="font-bold">{noteDPE}</span> - Après travaux : <span className="font-bold">{newNoteCompleteDPE}</span>
+                </p>
+              </>
             )}
           </div>
         </div>

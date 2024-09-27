@@ -19,7 +19,7 @@ const noteDPE = ({ nextStep }: any) => {
   // Mettre à jour sessionStorage lorsque la note DPE change
   useEffect(() => {
     if (selectednoteDPE) {
-      updateSessionStorage("noteDPE", selectednoteDPE); // Sauvegarder dans sessionStorage
+      updateSessionStorage("noteDPE", selectednoteDPE);
     }
   }, [selectednoteDPE]);
 

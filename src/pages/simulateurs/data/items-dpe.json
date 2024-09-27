@@ -1,0 +1,57 @@
+{
+    "initialScore": 100,
+    "typeDeLogement": {
+      "maison": 5
+    },
+    "anneeConstruction": {
+      "Avant 1948": 20,
+      "Entre 1950 et 1997": 15,
+      "Entre 1998 et 2012": 10,
+      "Après 2012": 0
+    },
+    "isolationScores": {
+      "murIsolation": 15,
+      "toiture": 10,
+      "combles": 10,
+      "sousSol": 5
+    },
+    "isolationReduction": {
+      "Aucun travaux": 1,
+      "+ de 10 ans": 0.5,
+      "- de 10 ans": 0.33
+    },
+    "vitrage": {
+      "Simple": 10,
+      "Double": 5,
+      "Triple": 2
+    },
+    "chauffage": {
+      "Électricité": 20,
+      "Gaz": 15,
+      "Fioul": 25,
+      "Pompe à chaleur": 5,
+      "Bois": 10
+    },
+    "eauChaude": {
+      "Électricité": 10,
+      "Gaz": 7,
+      "Fioul": 15,
+      "Pompe à chaleur": 5,
+      "Chauffe-eau thermodynamique": 3
+    },
+    "ventilation": {
+      "VMC simple flux": 5,
+      "VMC double flux": 2,
+      "Ventilation naturelle": 10,
+      "climatisation": 0
+    },
+    "scoreRange": {
+      "A": 80,
+      "B": 70,
+      "C": 60,
+      "D": 50,
+      "E": 40,
+      "F": 30
+    }
+  }
+  

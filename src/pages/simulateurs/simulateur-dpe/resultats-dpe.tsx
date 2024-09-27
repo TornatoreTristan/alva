@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { updateSessionStorage } from "../utils/simulateur-utils";
+import { updateSessionStorage, calculateDpeScore, getDpeRating } from "../utils/simulateur-utils";
 
 const Resultats = () => {
   const [logementData, setLogementData] = useState<any>({});
   const [noteDPE, setNoteDEP] = useState("");
+  const [score, setScore] = useState(0);
 
   // Charger logementData depuis sessionStorage
   useEffect(() => {
@@ -12,156 +13,15 @@ const Resultats = () => {
   }, []);
 
   useEffect(() => {
-    const dpeScoreNumber = calculateDpeScore();
-    console.log(dpeScoreNumber);
+    const dpeScoreNumber = calculateDpeScore(logementData);
+    setScore(dpeScoreNumber);
     setNoteDEP(getDpeRating(dpeScoreNumber));
   }, [logementData]);
 
   useEffect(() => {
     updateSessionStorage("noteDPE", noteDPE);
+    updateSessionStorage("scoreDPE", score);
   }, [noteDPE]);
-
-  const calculateDpeScore = () => {
-    let score = 100; // Partons d'un score maximum de 100 (un logement très performant)
-
-    // 1. Type de logement et année de construction
-    if (logementData?.logement?.selectedType === "maison") {
-      score -= 5; // Les maisons sont généralement moins efficientes que les appartements
-    }
-    if (logementData?.logement?.selectedYear) {
-      switch (logementData?.logement?.selectedYear) {
-        case "Avant 1948":
-          score -= 20; // Très peu isolées
-          break;
-        case "Entre 1950 et 1997":
-          score -= 15; // Isolation modérée
-          break;
-        case "Entre 1998 et 2012":
-          score -= 10; // Amélioration des normes d'isolation
-          break;
-        case "Après 2012":
-          score -= 5; // Logements plus récents et mieux isolés
-          break;
-      }
-    }
-
-    // 2. Isolation des murs, toit, fenêtres et sous-sol
-    const isolationScores: { [key: string]: number } = {
-      murIsolation: 15,
-      toiture: 10,
-      combles: 10,
-      sousSol: 5,
-    };
-
-    if (logementData?.isolation) {
-      for (const key in isolationScores) {
-        if (logementData.isolation[key]) {
-          switch (logementData.isolation[key]) {
-            case "Aucun travaux":
-              score -= isolationScores[key]; // Moins performant
-              break;
-            case "+ de 10 ans":
-              score -= isolationScores[key] / 2; // Moins performant
-              break;
-            case "- de 10 ans":
-              score -= isolationScores[key] / 3; // Modérément performant
-              break;
-          }
-        }
-      }
-    }
-
-    // 3. Vitrage et nombre de fenêtres
-    if (logementData?.isolation?.vitrage === "Double") {
-      score -= 5;
-    } else if (logementData?.isolation?.vitrage === "Triple") {
-      score -= 2;
-    } else {
-      score -= 10;
-    }
-
-    // 4. Chauffage : type d'énergie et efficacité
-    if (logementData?.equipements?.chauffageEnergie) {
-      switch (logementData.equipements?.chauffageEnergie) {
-        case "Électricité":
-          score -= 20; // Énergie moins efficiente et plus chère
-          break;
-        case "Gaz":
-          score -= 15;
-          break;
-        case "Fioul":
-          score -= 25; // Très inefficace et polluant
-          break;
-        case "Pompe à chaleur":
-          score -= 5; // Très efficiente
-          break;
-        case "Bois":
-          score -= 10; // Relativement propre mais moins efficient
-          break;
-      }
-    }
-
-    // 5. Eau chaude : type d'énergie
-    if (logementData?.equipements?.eauChaudeEnergie) {
-      switch (logementData.equipements?.eauChaudeEnergie) {
-        case "Électricité":
-          score -= 10;
-          break;
-        case "Gaz":
-          score -= 7;
-          break;
-        case "Fioul":
-          score -= 15;
-          break;
-        case "Pompe à chaleur":
-          score -= 5; // Très efficiente
-          break;
-        case "Chauffe-eau thermodynamique":
-          score -= 3; // Très performant
-          break;
-      }
-    }
-
-    // 6. Ventilation et climatisation
-    if (logementData?.ventilation?.ventilationType) {
-      switch (logementData.ventilation.ventilationType) {
-        case "VMC simple flux":
-          score -= 5; // Moins performant
-          break;
-        case "VMC double flux":
-          score -= 2; // Plus performant
-          break;
-        case "Ventilation naturelle":
-          score -= 10; // Plus performant
-          break;
-      }
-    }
-
-    if (logementData?.ventilation?.climatisation === "Non") {
-      score -= 10; //
-    }
-    // Retourner un score compris entre 0 et 100
-    return Math.max(0, Math.min(100, score)); // Le score est limité à cette plage
-  };
-
-  const getDpeRating = (score: number) => {
-    // Convertir le score en note DPE
-    if (score >= 80) {
-      return "A"; // Très performant
-    } else if (score >= 70) {
-      return "B"; // Performant
-    } else if (score >= 60) {
-      return "C"; // Moyennement performant
-    } else if (score >= 50) {
-      return "D"; // Moyennement performant
-    } else if (score >= 40) {
-      return "E"; // Passable
-    } else if (score >= 30) {
-      return "F"; // Insuffisant
-    } else {
-      return "G"; // Très insuffisant
-    }
-  };
 
   return (
     <div className="p-8 bg-[#F9FFE6] rounded-lg border border-primary my-12">

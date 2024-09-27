@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 
 const ResultatsTravaux = () => {
-  const [data, setData] = useState([]);
-  const [dureeEnMois, setDureeEnMois] = useState<number>(12); // Durée par défaut 12 mois
-  const montantEmprunte = 20000; // Montant du prêt en euros
+  const [data, setData] = useState<any>([]);
+  const [dureeEnMois, setDureeEnMois] = useState<number>(84); // Durée par défaut 12 mois
+  const [aideMontant, setAideMontant] = useState<number>(0);
+  const [montantEmprunte, setMontantEmprunte] = useState<number>(0);
+  const [mensualite, setMensualite] = useState<number>(0);
+  const [coutFinal, setCoutFinal] = useState<number>(0);
   const tauxAnnuel = 3; // Taux d'intérêt annuel en pourcentage
 
   // Charger les données des travaux depuis le sessionStorage
@@ -12,15 +15,26 @@ const ResultatsTravaux = () => {
     if (logementData) {
       const allData = JSON.parse(logementData);
       setData(allData);
-
+      setMontantEmprunte(parseInt(allData?.supplementaire?.priceWork) ?? 0);
       console.log(allData);
       console.log(convertDPEToNumber(allData.noteDPE));
     }
   }, []);
 
-  const convertDPEToNumber = (dpe) => {
-    // Tableau de correspondance entre les lettres DPE et leurs valeurs
-    const dpeMapping = {
+  useEffect(() => {
+    fetchData();
+  }, [data]);
+
+  useEffect(() => {
+    setMensualite(calculerMensualite(coutFinal, tauxAnnuel, dureeEnMois));
+  }, [coutFinal, data, dureeEnMois]);
+
+  useEffect(() => {
+    setCoutFinal(parseInt(data?.supplementaire?.priceWork) - aideMontant);
+  }, [aideMontant, montantEmprunte]);
+
+  const convertDPEToNumber = (dpe: string) => {
+    const dpeMapping: any = {
       A: 1,
       B: 2,
       C: 3,
@@ -29,10 +43,8 @@ const ResultatsTravaux = () => {
       F: 6,
       G: 7,
     };
-
-    // Vérifiez si la lettre est valide et renvoyez sa valeur
-    // const upperDPE = dpe.toUpperCase(); // Assurez-vous que la lettre est en majuscule
-    return dpeMapping[dpe] || null; // Retourne null si la lettre n'est pas valide
+    const upperDPE = dpe.toUpperCase();
+    return dpeMapping[dpe] || null;
   };
 
   const fetchData = async () => {
@@ -51,18 +63,24 @@ const ResultatsTravaux = () => {
     params.append("DPE.actuel", convertDPEToNumber(data.noteDPE));
     params.append("projet.DPE+visé", convertDPEToNumber(data.supplementaire.selectedNewNoteDPE));
     params.append("projet.travaux", parseInt(data.supplementaire.priceWork.replace(/\D/g, "")) || 0);
-    params.append("ménage.commune", `'${data.logement.postalCode}'`); // Code postal entouré de guillemets simples
+    params.append("ménage.commune", `'${data.logement.postalCode}'`);
     params.append("logement.propriétaire+occupant", data.situation.isOccupant.toLowerCase());
-    params.append("logement.résidence+principale+propriétaire", data.situation.isOwner.toLowerCase());
-    params.append("logement.période+de+construction", `'${data.supplementaire.selectedYear.toLowerCase()}'`); // Période entourée de guillemets simples
-    params.append("fields", "MPR.accompagnée.montant"); // Champs à récupérer
+
+    if (data.situation.isOccupant.toLowerCase() === "non") {
+      params.append("logement.résidence+principale+locataire", data.situation.isOwnerForLocataire.toLowerCase());
+    } else {
+      params.append("logement.résidence+principale+propriétaire", data.situation.isOwner.toLowerCase());
+    }
+
+    params.append("logement.période+de+construction", `'${data.supplementaire.selectedYear.toLowerCase()}'`);
+    params.append("fields", "MPR.accompagnée.montant");
 
     const paramUrl = params.toString().replace(/ /g, "+").replace(/%2B/g, "+");
     console.log(paramUrl);
-    // URL complète
+
     const url = `https://mesaidesreno.beta.gouv.fr/api/?${paramUrl}`;
-    // Affichez l'URL
     console.log(url);
+
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -71,33 +89,12 @@ const ResultatsTravaux = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const result = await response.json();
-      console.log(result); // Affichez le résultat ou traitez-le comme vous le souhaitez
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-
-    try {
-      const response = await fetch(url, {
-        method: "POST", // Changement ici pour POST
-        headers: {
-          "Content-Type": "application/json", // Le type de contenu
-        },
-        body: params.toString().replace(/ /g, "+").replace(/%2B/g, "+"), // Ajoutez les paramètres dans le corps de la requête
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log(result); // Affichez le résultat ou traitez-le comme vous le souhaitez
+      console.log(result);
+      setAideMontant(parseInt(result["MPR.accompagnée.montant"].rawValue) ?? 0);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
-  // Appelez la fonction pour exécuter la requête
-  fetchData();
 
   function calculerMensualite(capital: number, tauxAnnuel: number, mois: number) {
     let tauxMensuel = tauxAnnuel / 12 / 100; // Convertir le taux annuel en taux mensuel
@@ -106,16 +103,33 @@ const ResultatsTravaux = () => {
     return mensualite;
   }
 
-  const mensualite = calculerMensualite(montantEmprunte, tauxAnnuel, dureeEnMois);
+  // Formatage des montants en euros avec l'espace insécable
+  const formatEuro = (montant: number) => {
+    return montant.toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
+  };
 
   return (
     <div className="p-8 bg-[#F9FFE6] rounded-lg border border-primary my-12">
       <h2 className="text-3xl font-bold text-center mb-8">Résultats du Simulateur de Aides & Financement</h2>
 
       <div className="mt-8">
+        <h2>Résumé des travaux</h2>
+        <p>
+          <strong>Montant des travaux :</strong> {formatEuro(montantEmprunte)}
+        </p>
+        <p>
+          <strong>Montant des aides :</strong> {formatEuro(aideMontant)}
+        </p>
+        <hr />
+        <p>
+          <strong>Coût total après aides :</strong> {formatEuro(coutFinal)}
+        </p>
+      </div>
+
+      <div className="mt-8">
         <h1>Calculateur de prêt</h1>
 
-        <p>Montant emprunté: {montantEmprunte} €</p>
+        <p>Montant emprunté: {coutFinal} €</p>
         <p>Taux d'intérêt annuel: {tauxAnnuel} %</p>
 
         <div>

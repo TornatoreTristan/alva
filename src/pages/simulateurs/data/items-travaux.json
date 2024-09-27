@@ -3,42 +3,56 @@
         "name": "Fenêtres double vitrage performant",
         "category": "fenetres",
         "price": 4500,
-        "priority": 60
+        "priority": 70,
+        "score": 5
     },
     {
         "name": "Isolation des murs par l'intérieurs",
         "category": "isolation",
         "price": 7000,
-        "priority": 80
+        "priority": 80,
+        "score": 5
     },
     {
         "name": "Isolation des murs par l'extérieur",
         "category": "isolation",
         "price": 7000,
-        "priority": 80
+        "priority": 80,
+        "score": 5
     },
     {
         "name": "Isolation des sols",
         "category": "isolation",
         "price": 3500,
-        "priority": 75
+        "priority": 60,
+        "score": 5
+    },
+    {
+        "name": "Isolation des combles",
+        "category": "isolation",
+        "price": 3500,
+        "priority": 85,
+        "score": 5
     },
     {
         "name": "VMC double flux",
         "category": "ventilation",
         "price": 5000,
-        "priority": 50
+        "priority": 50,
+        "score": 5
     },
     {
         "name": "Pompe à chaleur air-eau",
         "category": "chauffage",
         "price": 12000,
-        "priority": 90
+        "priority": 70,
+        "score": 5
     },
     {
         "name": "Chauffe-eau thermodynamique",
         "category": "Eau Chaude",
         "price": 2000,
-        "priority": 40
+        "priority": 40,
+        "score": 5
     }
 ]

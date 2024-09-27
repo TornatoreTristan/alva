@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateSessionStorage } from "../utils/simulateur-utils";
-import travauxData from "../items-travaux.json";
+import travauxData from "../data/items-travaux.json";
 
 const Travaux = ({ nextStep }: any) => {
   const [selectedTravaux, setSelectedTravaux] = useState<string[]>([]);
@@ -46,14 +46,17 @@ const Travaux = ({ nextStep }: any) => {
   const hasRecentCombleIsolation = logementData.isolation?.combles === "- de 10 ans";
   const hasRecentSolIsolation = logementData.isolation?.sousSol === "Terre-plein";
   const hasVmcDoubleFlux = logementData.ventilation?.ventilationType === "VMC double flux";
-  const hasEfficientChauffage = logementData.chauffageEnergie === "Pompe à chaleur" || logementData.chauffageEnergie === "Bois";
+  const hasEfficientChauffage = logementData.equipements?.chauffageEnergie === "Pompe à chaleur" || logementData.equipements?.chauffageEnergie === "Bois";
+  const hasEfficientChauffageEau = logementData.equipements?.eauChaudeEnergie === "Chauffe-eau thermodynamique";
 
   // Filtrer les travaux
   const filteredTravaux = travauxData.filter((travauxItem) => {
     if (travauxItem.name.includes("Fenêtres") && hasDoubleOrTripleVitrage) return false;
     if (travauxItem.name.includes("Isolation des murs") && hasRecentMursIsolation) return false;
     if (travauxItem.name.includes("VMC double flux") && hasVmcDoubleFlux) return false;
-    if (travauxItem.name.includes("Chauffage") && hasEfficientChauffage) return false;
+    if (travauxItem.name.includes("combles") && hasRecentCombleIsolation) return false;
+    if (travauxItem.name.includes("chaleur") && hasEfficientChauffage) return false;
+    if (travauxItem.name.includes("Chauffe") && hasEfficientChauffageEau) return false;
     if (travauxItem.name.includes("Isolation des sols") && hasRecentSolIsolation) return false;
     return true;
   });
