@@ -4,55 +4,55 @@
         "category": "fenetres",
         "price": 4500,
         "priority": 70,
-        "score": 5
+        "score": 10
     },
     {
         "name": "Isolation des murs par l'intérieurs",
         "category": "isolation",
         "price": 7000,
         "priority": 80,
-        "score": 5
+        "score": 15
     },
     {
         "name": "Isolation des murs par l'extérieur",
         "category": "isolation",
         "price": 7000,
         "priority": 80,
-        "score": 5
+        "score": 15
     },
     {
         "name": "Isolation des sols",
         "category": "isolation",
         "price": 3500,
         "priority": 60,
-        "score": 5
+        "score": 10
     },
     {
         "name": "Isolation des combles",
         "category": "isolation",
         "price": 3500,
-        "priority": 85,
-        "score": 5
+        "priority": 78,
+        "score": 10
     },
     {
         "name": "VMC double flux",
         "category": "ventilation",
         "price": 5000,
         "priority": 50,
-        "score": 5
+        "score": 10
     },
     {
         "name": "Pompe à chaleur air-eau",
         "category": "chauffage",
         "price": 12000,
         "priority": 70,
-        "score": 5
+        "score": 10
     },
     {
         "name": "Chauffe-eau thermodynamique",
         "category": "Eau Chaude",
         "price": 2000,
         "priority": 40,
-        "score": 5
+        "score": 10
     }
 ]
