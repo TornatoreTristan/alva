@@ -60,10 +60,10 @@ const ResultatsTravaux = () => {
 
     params.append("vous.propriétaire.condition", data.situation.isOwner.toLowerCase());
     params.append("ménage.personnes", data.situation.nbrOccupant);
-    params.append("ménage.revenu", parseInt(data.situation.revenue.replace(/\D/g, "")) || 0);
+    params.append("ménage.revenu", (parseInt(data.situation.revenue.replace(/\D/g, "")) || 0).toString());
     params.append("DPE.actuel", convertDPEToNumber(data.noteDPE));
     params.append("projet.DPE+visé", convertDPEToNumber(data.noteDPENew));
-    params.append("projet.travaux", parseInt(data.montant_travaux) || 0);
+    params.append("projet.travaux", (parseInt(data.montant_travaux) || 0).toString());
     params.append("ménage.commune", `'${data.logement.postalCode}'`);
     params.append("logement.propriétaire+occupant", data.situation.isOccupant.toLowerCase());
 

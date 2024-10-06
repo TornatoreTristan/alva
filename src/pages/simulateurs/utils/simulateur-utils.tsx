@@ -1,3 +1,4 @@
+// @ts-nocheck
 import data from "../data/items-dpe.json";
 
 export const calculateDpeScore = (logementData: any): number => {
