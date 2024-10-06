@@ -60,7 +60,7 @@ const Supplementaire = ({ nextStep }: { nextStep: () => void }) => {
           <input
             type="number"
             value={surface}
-            onChange={(e) => setSurface(e.target.value)}
+            onChange={(e) => setSurface(parseFloat(e.target.value))}
             placeholder="Nombre en m²"
             className="p-2 border rounded-lg focus:outline-none focus:border-primary focus:border-2"
           />
